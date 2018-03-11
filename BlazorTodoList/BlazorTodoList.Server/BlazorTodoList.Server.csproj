@@ -7,11 +7,18 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.0.5-preview1-10054" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorTodoList.Client\BlazorTodoList.Client.csproj" />
     <ProjectReference Include="..\BlazorTodoList.Shared\BlazorTodoList.Shared.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.0" />
+  </ItemGroup> 
 
 </Project>

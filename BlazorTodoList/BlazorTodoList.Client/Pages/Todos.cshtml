@@ -1,0 +1,57 @@
+﻿@using System.Threading.Tasks
+@using BlazorTodoList.Shared
+@inject HttpClient Http
+
+<h1>Todos</h1>
+
+@if (todos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (todos.Count() == 0)
+    {
+        <div>Nothing to do!</div>
+    }
+    @foreach(var todo in todos)
+    {
+        <div>
+            <span>@todo.Text</span>
+            <button @onclick(async () => await MarkAsDone(todo))>Complete</button>
+        </div>
+    }
+    <input @bind(newTodo.Text) placeholder="What should I do?" />
+    <button @onclick(async () => await AddTodo())>Add todo</button>
+}
+
+@functions {
+    TodoItem[] todos;
+    TodoItem newTodo = new TodoItem();
+
+    protected override async Task OnInitAsync()
+    {
+        await GetTodos();
+    }
+
+    private async Task GetTodos()
+    {
+        todos = (await Http.GetJsonAsync<TodoItem[]>("/api/todo"))
+            .Where(todo => !todo.IsDone)
+            .ToArray();
+        StateHasChanged();
+    }
+
+    private async Task AddTodo()
+    {
+        await Http.PostJsonAsync<TodoItem>("/api/todo", newTodo);
+        newTodo = new TodoItem();
+        await GetTodos();
+    }
+
+    private async Task MarkAsDone(TodoItem todo)
+    {
+        await Http.PostJsonAsync<TodoItem>($"/api/todo/{todo.Id}/complete", null);
+        await GetTodos();
+    }
+}

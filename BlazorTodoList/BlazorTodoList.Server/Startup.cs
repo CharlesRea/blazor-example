@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace BlazorTodoList.Server
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
+            services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+
             services.AddResponseCompression(options =>
             {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes
@@ -39,10 +42,7 @@ namespace BlazorTodoList.Server
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
-            });
+            app.UseMvc();
 
             app.UseBlazor<Client.Program>();
         }

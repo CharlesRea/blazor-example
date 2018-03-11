@@ -1,0 +1,11 @@
+﻿@using BlazorTodoList.Shared
+
+<div>
+    <span>@todo.Text</span>
+    <button @onclick(() => CompleteTodo(todo))>Complete</button>
+</div>
+
+@functions {
+    public TodoItem todo { get; set; }
+    public Action<TodoItem> CompleteTodo { get; set; }
+}
